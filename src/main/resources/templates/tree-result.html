@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Enter Numbers</title>
+    <title>Tree Result</title>
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css" />
+
 </head>
 <body>
-<h2>Enter Numbers to Create Binary Search Tree</h2>
-<form action="/process-numbers" method="post">
-    <label for="numbers">Numbers (comma separated):</label>
-    <input type="text" id="numbers" name="numbers" required />
-    <button type="submit">Submit</button>
-</form>
+<h2>Binary Search Tree</h2>
+<p>Tree structure (inorder traversal): <span th:text="${treeStructure}"></span></p>
+<a href="/enter-numbers">Enter More Numbers</a>
 <a href="/previous-trees">Show Previous Trees</a>
 </body>
 </html>
