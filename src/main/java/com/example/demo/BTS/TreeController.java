@@ -24,23 +24,23 @@ public class TreeController {
     }
 
     @PostMapping("/process-numbers")
-    public String processNumbers(@RequestParam("numbers") String numbers, Model model) {
+    @ResponseBody
+    public java.util.Map<String, Object> processNumbersJson(@RequestParam("numbers") String numbers) {
+        BinarySearchTree bstJson = new BinarySearchTree();
         String[] numArray = numbers.split(",");
-        List<Integer> numList = new ArrayList<>();
-
         for (String num : numArray) {
-            numList.add(Integer.parseInt(num.trim()));
-            bst.insert(Integer.parseInt(num.trim()));
+            bstJson.insert(Integer.parseInt(num.trim()));
         }
 
         TreeRecord treeRecord = new TreeRecord();
         treeRecord.setInputNumbers(numbers);
-        treeRecord.setTreeStructure(bst.inorderTraversal().toString());
+
+        treeRecord.setTreeStructure(bstJson.toJson());
         treeRecordRepository.save(treeRecord);
 
-        model.addAttribute("treeStructure", bst.inorderTraversal());
-        return "tree-result";
+        return bstJson.toJsonRec(bstJson.getRoot());
     }
+
 
     @GetMapping("/previous-trees")
     public String showPreviousTrees(Model model) {
