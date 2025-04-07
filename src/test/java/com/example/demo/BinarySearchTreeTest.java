@@ -1,3 +1,5 @@
+package com.example.demo;
+
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
@@ -11,7 +13,7 @@ public class BinarySearchTreeTest {
     public static class BinarySearchTree {
         private TreeNode root;
 
-        public class TreeNode {
+        public static class TreeNode {
             int value;
             TreeNode left, right;
 
@@ -116,7 +118,7 @@ public class BinarySearchTreeTest {
         assertEquals(1, inOrder.get(0));
         assertEquals(3, inOrder.get(1));
         assertEquals(5, inOrder.get(2));
-        assertEquals(7, inOrder.get(5));
+        assertEquals(7, inOrder.get(3));
         assertEquals(8, inOrder.get(4));
     }
 
@@ -129,8 +131,8 @@ public class BinarySearchTreeTest {
         assertNull(root);
     }
 
-    @Test
-    public void testToJson() {
+    @org.junit.jupiter.api.Test
+    public void testToJson() throws Exception {
         BinarySearchTree bst = new BinarySearchTree();
         bst.insert(3);
         bst.insert(1);
@@ -141,11 +143,28 @@ public class BinarySearchTreeTest {
         String json = bst.toJson();
 
         assertNotNull(json);
-        assertTrue(json.contains("\"value\":3"));
-        assertTrue(json.contains("\"left\":"));
-        assertTrue(json.contains("\"right\":"));
-    }
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map treeMap = objectMapper.readValue(json, Map.class);
+
+        assertEquals(3, treeMap.get("value"));
+
+        Map<String, Object> left = (Map<String, Object>) treeMap.get("left");
+        assertNotNull(left);
+        assertEquals(1, left.get("value"));
+
+        Map<String, Object> right = (Map<String, Object>) treeMap.get("right");
+        assertNotNull(right);
+        assertEquals(7, right.get("value"));
+
+        Map<String, Object> rightRight = (Map<String, Object>) right.get("right");
+        assertNotNull(rightRight);
+        assertEquals(8, rightRight.get("value"));
+
+        Map<String, Object> rightRightRight = (Map<String, Object>) rightRight.get("right");
+        assertNotNull(rightRightRight);
+        assertEquals(24, rightRightRight.get("value"));
+    }
     @Test
     public void testBalancedTree() {
         BinarySearchTree bst = new BinarySearchTree();
